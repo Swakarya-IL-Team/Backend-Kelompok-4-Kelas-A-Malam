@@ -38,3 +38,21 @@ export async function getNoteById(req, res) {
         return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
     }
 }
+
+// mengubah notes (judul, tanggal, dan catatan)
+export async function updateNoteById(req, res) {
+    const { id } = req.params;
+    const { title, datetime, note } = req.body;
+
+    try {
+        const result = await query('UPDATE notes SET title = ?, datetime = ?, note = ? WHERE id = ?', [title, datetime, note, id]);
+        if (result.affectedRows > 0) {
+            return res.status(200).json({ message: "Berhasil mengupdate catatan" });
+        } else {
+            return res.status(404).json({ msg: "Catatan tidak ditemukan" });
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan", error);
+        return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+    }
+}
