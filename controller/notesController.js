@@ -56,3 +56,31 @@ export async function updateNoteById(req, res) {
         return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
     }
 }
+
+// menghapus notes berdasarkan id
+export async function deleteNoteById(req, res) {
+    const { id } = req.params;
+    try {
+        const result = await query('DELETE FROM notes WHERE id = ?', [id]);
+        if (result.affectedRows > 0) {
+            return res.status(200).json({ message: "Catatan berhasil dihapus" });
+        } else {
+            return res.status(404).json({ msg: "Catatan tidak ditemukan" });
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan", error);
+        return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+    }
+}
+
+// menghapus semua notes
+export async function deleteAllNotes(req, res) {
+    try {
+        await query('TRUNCATE TABLE notes');
+        return res.status(200).json({ message: "Berhasil menghapus semua catatan" });
+    } catch (error) {
+        console.error("Terjadi kesalahan", error);
+        return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+    }
+}
+
