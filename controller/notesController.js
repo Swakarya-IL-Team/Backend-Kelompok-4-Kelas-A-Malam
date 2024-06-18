@@ -22,3 +22,19 @@ export async function getAllNotes(req,res) {
         return res.status(500).json({msg:"terjadi kesalahan pada server"})
     }
 }
+
+// menampilkan salah satu notes
+export async function getNoteById(req, res) {
+    const { id } = req.params;
+    try {
+        const notes = await query('SELECT * FROM notes WHERE id = ?', [id]);
+        if (notes.length > 0) {
+            return res.status(200).json(notes[0]);
+        } else {
+            return res.status(404).json({ msg: "Catatan tidak ditemukan" });
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan", error);
+        return res.status(500).json({ msg: "Terjadi kesalahan pada server" });
+    }
+}
