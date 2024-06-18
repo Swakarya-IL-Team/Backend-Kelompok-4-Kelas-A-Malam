@@ -19,11 +19,12 @@ export const testConnection = async() => {
     }
 }
 
-export const query = async(query,value) => {
-    try{
-        const [result] = await db.query(query, value??[])
-        return result
-    }catch(e){
-        console.log("GAGAL")
+export const query = async (query, values) => {
+    try {
+        const [result] = await db.query(query, values || []);
+        return result;
+    } catch (error) {
+        console.error("Query failed:", error);
+        throw error; // Melempar kesalahan agar bisa ditangani oleh pemanggil fungsi ini
     }
 }
